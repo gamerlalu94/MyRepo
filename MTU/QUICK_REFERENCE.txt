@@ -1,0 +1,279 @@
+# Mock Test Timer - Quick Reference Card
+
+## 🚀 Quick Start
+```bash
+python mock_test_timer_gui.py
+```
+
+---
+
+## 📋 Four Setup Steps
+
+### Step 1️⃣: Test Description
+- **What**: Enter your mock test name
+- **Example**: "JEE Main Physics - Jan 2024"
+- **Why**: Identifies your test in logs
+
+### Step 2️⃣: Time Limits
+- **What**: Set minutes for each category
+- **Categories**:
+  - ⏭️ Thinking (understanding)
+  - 🧮 Solving (calculations)
+  - 🎯 Applying (concept use)
+  - ✔️ Verification (checking)
+- **Range**: 1-60 minutes each
+- **Tip**: Start with 2 min per category
+- **Alert**: Beep sounds if you exceed!
+
+### Step 3️⃣: Total Test Duration
+- **3 hours** (180 min) - Full test
+- **2.5 hours** (150 min) - Quick test
+- **Custom** (1-480 min) - Your choice
+- **Auto-end**: Test ends when duration reached
+
+### Step 4️⃣: Theme Selection
+- **Light** - White, default
+- **Dark** - Eye-friendly
+- **Professional** - Blue theme
+
+---
+
+## ⏱️ Timer Interface
+
+### Information Bar (Shows):
+- **Current Q**: Question number (e.g., Q15/75)
+- **Timer**: Current question time (MM:SS)
+- **Categories**: Checkmarks for used categories
+- **Total Time**: Accumulated test time (HH:MM:SS)
+
+### For Each Question:
+1. Select **Question Number** (auto-increments)
+2. Choose **Time Category** (Thinking/Solving/etc.)
+3. Pick **Question Theme** (Algebra/Geometry/etc.)
+4. Add **Notes** (optional observations)
+
+### Main Controls:
+| Button | Action |
+|--------|--------|
+| ▶ Start | Begin timing, opens floating window |
+
+### Floating Window (Auto-opens):
+| Button | Action |
+|--------|--------|
+| ⏸ Pause | Temporarily stop timer |
+| ⏹ Stop | Save question, auto-start next |
+
+**Floating Window Shows**:
+- Large timer (MM:SS)
+- Total time elapsed
+- Category checklist
+- Pause/Stop buttons
+
+---
+
+## 📊 Text File Output
+
+**Location**: `mock_test_logs/mock_test_YYYYMMDD_HHMMSS.txt`
+
+**Format**:
+```
+Session Information
+Test Name: Your Test Name
+Started: 2024-01-29 14:30:00
+Total Duration: 180 minutes
+
+Question Details:
+Q1 | Thinking | Time: 2.5 min | Theme: Algebra | Timestamp: 14:31:00
+Q2 | Solving | Time: 3.2 min | Theme: Geometry | Timestamp: 14:35:30
+...
+```
+
+**Data Includes**:
+- Question number
+- Time category used
+- Actual time spent
+- Theme/subject
+- Timestamp
+- Total session time
+
+## 📈 Key Features
+
+### Auto-Progression
+- Press Stop on Q1 → Q2 auto-starts
+- New floating window opens
+- No manual clicking needed
+
+### Beep Alert
+- Sounds when you exceed max time/question
+- Continues counting, choice is yours
+- Helpful wake-up call!
+
+### Auto-End
+- Test ends at total duration
+- "THE PAPER HAS ENDED" message
+- Shows log file directory
+- All data saved
+
+### Information Bar
+- Real-time question/timer/categories display
+- Total time accumulation
+- Always visible at top
+
+---
+
+## 📈 Analysis Tips
+
+### Interpreting Your Data:
+- Questions with longest time = weak areas
+- Quick questions = strong topics
+- Total time vs duration = pacing check
+
+### Track Progress:
+- Compare multiple test files
+- See if you're getting faster
+- Identify improving categories
+
+### Identify Patterns:
+```
+If Physics takes 5 min avg:
+  → Need more practice
+If Chemistry takes 2 min avg:
+  → You're strong here
+```
+
+---
+
+## 🎨 Customization
+
+### Add New Categories:
+Edit `mock_test_timer_gui.py`:
+```python
+categories = ["Thinking", "Solving", "Applying", "Verification", "Review"]
+```
+
+### Add Themes:
+```python
+self.themes["Custom"] = {
+    "bg": "#color",
+    "fg": "#color",
+    ...
+}
+```
+
+### Custom Question Types:
+```python
+values=["Math", "Science", "English", "Custom"]
+```
+
+---
+
+## ❓ Common Issues
+
+| Problem | Solution |
+|---------|----------|
+| App won't start | Check Python 3.8+, run `python -m tkinter` |
+| No beep sound | Check system volume, some systems need config |
+| Floating window hidden | Look at taskbar, click to bring to front |
+| Timer not pausing | Click pause in floating window, not main window |
+| Next question not starting | Make sure to click Stop (not Pause) in floating |
+
+---
+
+## ✅ Best Practices
+
+**Before Test**:
+- ✓ Realistic time limits (based on past tests)
+- ✓ Comfortable theme
+- ✓ Clear test description
+- ✓ Appropriate total duration
+
+**During Test**:
+- ✓ Use Pause if rereading
+- ✓ Let beep alert you
+- ✓ Click Stop to auto-progress
+- ✓ Watch information bar
+
+**After Test**:
+- ✓ Review log file
+- ✓ Analyze patterns
+- ✓ Identify weak areas
+- ✓ Track progress over time
+- ✓ Compare with other tests
+
+---
+
+## 📁 File Structure
+
+```
+Your Folder/
+├── mock_test_timer_gui.py              ← Main application
+├── MOCK_TEST_TIMER_DOCUMENTATION.md   ← Full guide
+├── mock_test_timer_demo.ipynb          ← Jupyter demo
+├── QUICK_REFERENCE.txt                 ← This file
+└── mock_test_logs/                     ← Auto-created
+    ├── mock_test_20240129_143000.csv
+    ├── mock_test_20240129_150000.csv
+    └── ...
+```
+
+---
+
+## 🔧 System Requirements
+
+- **Python**: 3.8+
+- **OS**: Windows, macOS, Linux
+- **Dependencies**: None! (uses standard library)
+- **Storage**: ~100KB per test CSV
+
+---
+
+## 📞 Support
+
+1. Check **MOCK_TEST_TIMER_DOCUMENTATION.md** for detailed help
+2. Review **mock_test_timer_demo.ipynb** for examples
+3. Check error messages in terminal
+4. Ensure write permissions in directory
+
+---
+
+## 🎯 Workflow Summary
+
+```
+1. Launch Application
+         ↓
+2. Enter Test Description
+         ↓
+3. Set Time Limits
+         ↓
+4. Choose Theme
+         ↓
+5. START TEST SESSION
+         ↓
+   ┌─────────────────┐
+   │ For Each Q:     │
+   │ - Set details   │
+   │ - Start timer   │
+   │ - Answer        │
+   │ - Stop & Save   │
+   └─────────────────┘
+         ↓
+6. END SESSION
+         ↓
+7. ANALYZE CSV FILE
+```
+
+---
+
+## 💡 Pro Tips
+
+1. **Pause for Reading**: Use ⏸ to pause during re-reads
+2. **Batch View**: Click "View Log File" to see data anytime
+3. **Track Themes**: Group by question theme to find patterns
+4. **Time Trends**: Compare multiple sessions over time
+5. **Category Focus**: Identify categories taking too long
+
+---
+
+**Version**: 1.0 | **Date**: January 2024 | **Language**: Python 3.8+
+
+*Happy Mock Testing! 📚⏱️*
