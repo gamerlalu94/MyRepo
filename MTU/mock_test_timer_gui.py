@@ -445,8 +445,9 @@ class MockTestTimerGUI:
             command=self.end_session
         ).pack(side="left", padx=5)
         
-        # Auto-launch floating window when session starts
-        self.root.after(500, self.open_floating_window)
+        # Auto-launch floating window and start timer for question 1 when session starts
+        self.root.after(500, lambda: self.start_question_timer(1))
+        self.root.after(600, self.open_floating_window)
     
     def create_question_block(self, parent, question_num, theme):
         """Create a question block with category checklist and timer"""
@@ -639,6 +640,12 @@ class MockTestTimerGUI:
     def stop_question_timer(self, question_num):
         """Stop timer and auto-start next question's timer"""
         self.question_data[question_num]["timer_running"] = False
+        
+        # Save the elapsed time to time_var in minutes
+        elapsed_seconds = self.question_data[question_num]["elapsed_seconds"]
+        elapsed_minutes = elapsed_seconds / 60.0
+        self.question_data[question_num]["time_var"].set(f"{elapsed_minutes:.1f}")
+        
         self.update_timer_display(question_num)
         
         # Close current floating window
@@ -703,11 +710,16 @@ class MockTestTimerGUI:
         total_time_text = f"{total_minutes:02d}:{total_secs:02d}"
         self.mini_total_time_label.config(text=total_time_text)
     
-    def update_floating_category(self, question_num, category, var):
+    def update_floating_category(self, question_num, category):
         """Update category in question data when checked in floating window"""
         if question_num in self.question_data:
             if category in self.question_data[question_num]["categories"]:
-                self.question_data[question_num]["categories"][category].set(var.get())
+                # Get the current state from floating window checkbox
+                current_state = self.floating_window_category_vars[category].get()
+                # Update the main question data
+                self.question_data[question_num]["categories"][category].set(current_state)
+                # Refresh the miniature display
+                self.update_miniature_form(question_num)
     
     def open_floating_window(self):
         """Open a floating window with timer controls"""
@@ -717,7 +729,7 @@ class MockTestTimerGUI:
         
         self.mini_window = tk.Toplevel(self.root)
         self.mini_window.title(f"Question {self.current_question_num}")
-        self.mini_window.geometry("380x280")
+        self.mini_window.geometry("450x320")
         self.mini_window.resizable(True, True)
         self.mini_window.attributes('-topmost', True)  # Keep on top
         
@@ -729,18 +741,36 @@ class MockTestTimerGUI:
         categories_frame = tk.Frame(self.mini_window, bg=theme["bg"])
         categories_frame.pack(fill="x", padx=10, pady=5)
         
-        categories = ["Thinking", "Solving", "Applying"]
+        tk.Label(
+            categories_frame,
+            text="Categories:",
+            font=("Arial", 9, "bold"),
+            bg=theme["bg"],
+            fg=theme["fg"]
+        ).pack(side="left", padx=5)
+        
+        categories = ["Thinking", "Solving", "Applying", "Verification"]
         self.floating_window_category_vars = {}
         
+        # Initialize floating window checkboxes from main question data
         for category in categories:
-            var = tk.BooleanVar(value=False)
+            # Get the current state from main question data
+            if self.current_question_num in self.question_data:
+                if category in self.question_data[self.current_question_num]["categories"]:
+                    initial_value = self.question_data[self.current_question_num]["categories"][category].get()
+                else:
+                    initial_value = False
+            else:
+                initial_value = False
+            
+            var = tk.BooleanVar(value=initial_value)
             self.floating_window_category_vars[category] = var
             
             ttk.Checkbutton(
                 categories_frame,
                 text=category,
                 variable=var,
-                command=lambda qn=self.current_question_num, cat=category, v=var: self.update_floating_category(qn, cat, v)
+                command=lambda qn=self.current_question_num, cat=category: self.update_floating_category(qn, cat)
             ).pack(side="left", padx=5)
         
         # Time info frame
